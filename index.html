@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>PwC Tech Day Nantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1b1d; --muted:#767472; --muted-2:#a6a3a0; --paper:#f7f4f0; --card:#fff; --line:#eae5de;
+  --orange:#e8622c; --orange-dark:#c15a1f; --blue:#2a4f9c; --grey-pale:#f1f0ee; --grey-dark:#5c5a57;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; scroll-behavior:smooth;}
+body{
+  font-family:'Inter', Arial, sans-serif;
+  background:
+    radial-gradient(900px 500px at 100% -10%, #fdece1 0%, rgba(253,236,225,0) 60%),
+    radial-gradient(700px 400px at -10% 20%, #eef2fb 0%, rgba(238,242,251,0) 55%),
+    var(--paper);
+  color:var(--ink); min-height:100vh; padding-bottom:88px; max-width:520px; margin:0 auto;
+  position:relative; box-shadow:0 0 60px rgba(0,0,0,0.06);
+}
+header{
+  background:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:40;
+}
+header::after{
+  content:""; position:absolute; left:18px; right:18px; bottom:-1px; height:3px;
+  background:linear-gradient(90deg,var(--orange) 0%, #f7a35c 45%, rgba(247,163,92,0) 100%);
+}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand .title-block{display:flex; flex-direction:column; line-height:1.15;}
+.brand .title-block .t1{font-family:'Poppins',sans-serif; font-weight:700; font-size:14px;}
+.brand .title-block .t2{font-size:10.5px; color:var(--muted); font-weight:500;}
+header .datebox{text-align:right; font-size:10.5px; color:var(--muted); line-height:1.5;}
+header .datebox b{color:var(--ink); font-size:11.5px;}
+.pwc-logo{height:30px; width:auto; flex:0 0 auto;}
+
+.section-title{
+  font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; margin:22px 18px 10px 18px;
+  display:flex; align-items:center; gap:8px;
+}
+.section-title .bar{width:4px;height:14px;background:var(--orange);border-radius:2px;}
+.section-sub{margin:-6px 18px 12px 18px; font-size:11.5px; color:var(--muted);}
+
+.parcours-scroll{display:flex; gap:8px; overflow-x:auto; padding:0 18px 6px 18px; scrollbar-width:none;}
+.parcours-scroll::-webkit-scrollbar{display:none;}
+.chip{
+  flex:0 0 auto; border:1px solid var(--line); background:#fff; padding:9px 15px; border-radius:999px;
+  font-size:12px; font-weight:600; color:var(--ink); cursor:pointer; white-space:nowrap;
+  transition:all .15s ease; display:flex; align-items:center; gap:6px;
+}
+.chip .n{font-size:10px; color:var(--muted-2); font-weight:600;}
+.chip.active{background:linear-gradient(135deg,#f2793f,#d9481c); color:#fff; border-color:transparent; box-shadow:0 6px 14px -4px rgba(217,72,28,.45);}
+.chip.active .n{color:rgba(255,255,255,.8);}
+
+.corner-list{display:flex; flex-direction:column; gap:10px; padding:6px 18px 4px 18px;}
+.corner-row{
+  background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 14px;
+  display:flex; align-items:center; gap:12px; box-shadow:0 6px 16px -10px rgba(30,20,10,.1);
+}
+.corner-row .badge{
+  flex:0 0 auto; width:34px;height:34px; border-radius:10px; background:var(--orange); color:#fff;
+  font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;
+}
+.corner-row .badge.theme2{background:var(--blue);}
+.corner-row .badge.special{background:var(--grey-dark);}
+.corner-row .info{flex:1; min-width:0;}
+.corner-row .info .name{font-family:'Poppins',sans-serif; font-weight:700; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.corner-row .info .theme{font-size:10.5px; color:var(--muted); margin-top:1px;}
+.goto-btn{
+  flex:0 0 auto; border:none; background:var(--ink); color:#fff; font-size:11.5px; font-weight:700;
+  padding:8px 13px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:5px;
+}
+.goto-btn:active{transform:scale(.96);}
+
+.map-anchor{scroll-margin-top:70px;}
+.map-card{
+  background:var(--card); border-radius:20px; margin:16px 18px 10px 18px; padding:16px;
+  box-shadow:0 14px 36px -14px rgba(30,20,10,.14); border:1px solid var(--line);
+}
+.search-stack{display:flex; flex-direction:column; gap:8px; margin-bottom:14px; position:relative;}
+.search-row{
+  display:flex; align-items:center; gap:10px; background:var(--grey-pale); border-radius:14px;
+  padding:11px 14px; border:1.5px solid transparent; transition:border-color .15s ease;
+}
+.search-row:focus-within{border-color:var(--orange);}
+.search-row .dot-ico{width:10px;height:10px;border-radius:50%;flex:0 0 auto;}
+.search-row.start .dot-ico{background:var(--ink);}
+.search-row.end .dot-ico{background:var(--orange);border-radius:3px;}
+.search-row select{border:none; background:none; outline:none; font-size:13px; font-weight:600; color:var(--ink); flex:1; font-family:'Inter',sans-serif; appearance:none;}
+.search-row select.placeholder{color:var(--muted-2); font-weight:500;}
+.swap-btn{
+  position:absolute; right:14px; top:50%; transform:translateY(-50%); background:#fff; border:1px solid var(--line);
+  width:28px;height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:2; box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.legend{display:flex; gap:14px; font-size:10.5px; color:var(--muted); margin:2px 2px 12px 2px; flex-wrap:wrap;}
+.legend span{display:inline-flex; align-items:center; gap:6px; font-weight:500;}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+.dot.theme1{background:linear-gradient(135deg,#f79157,#d9481c);}
+.dot.theme2{background:linear-gradient(135deg,#5c85d6,#28459b);}
+.dot.special{background:#8a8784;}
+.map-scroll{overflow-x:auto; border-radius:14px; background:#fbf9f6; border:1px solid var(--line);}
+svg#planmap{display:block; width:100%; min-width:660px; height:auto;}
+.route-instructions{margin-top:12px; background:#fff6ef; border:1px solid #f6dcc0; border-radius:14px; padding:12px 14px; display:none;}
+.route-instructions.visible{display:block;}
+.route-instructions .ri-head{display:flex; align-items:center; justify-content:space-between; font-size:11.5px; font-weight:700; color:var(--orange-dark); margin-bottom:8px;}
+.ri-step{display:flex; align-items:center; gap:10px; font-size:12.5px; color:#3a3937; padding:6px 0; border-top:1px dashed #f0d9bf;}
+.ri-step:first-child{border-top:none;}
+.ri-step .ri-ico{width:26px;height:26px; border-radius:8px; background:#fff; border:1px solid #f0d9bf; display:flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.route-hint{margin-top:10px; padding:10px 12px; border-radius:12px; background:#faf8f5; border:1px dashed var(--line); font-size:11.5px; color:var(--muted); text-align:center;}
+
+.sheet-overlay{position:fixed; inset:0; background:rgba(20,15,10,.45); z-index:100; opacity:0; visibility:hidden; transition:opacity .25s ease; display:flex; align-items:flex-end; justify-content:center;}
+.sheet-overlay.open{opacity:1; visibility:visible;}
+.sheet{background:#fff; width:100%; max-width:520px; border-radius:24px 24px 0 0; max-height:88vh; overflow-y:auto; padding:10px 22px 26px 22px; transform:translateY(100%); transition:transform .3s cubic-bezier(.32,.72,0,1); position:relative;}
+.sheet-overlay.open .sheet{transform:translateY(0);}
+.sheet-handle{width:40px;height:4px;background:#e0ddd8;border-radius:99px;margin:8px auto 14px auto;}
+.sheet-close{position:absolute; top:16px; right:18px; width:30px;height:30px;border-radius:50%; background:var(--grey-pale); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.tag{display:inline-flex; align-items:center; gap:6px; font-size:10px; padding:4px 11px; border-radius:999px; font-weight:700; letter-spacing:.2px; text-transform:uppercase;}
+.tag.theme1{background:linear-gradient(135deg,#fff1e6,#fde3d0); color:var(--orange-dark);}
+.tag.theme2{background:linear-gradient(135deg,#eaf0fc,#dbe6fa); color:var(--blue);}
+.tag.special{background:#efeeec; color:#5c5a57;}
+.sheet-title{font-family:'Poppins',sans-serif; font-size:20px; font-weight:700; margin:12px 0 2px 0;}
+.sheet-desc{font-size:13.5px; line-height:1.6; color:#3a3937; margin:10px 0 16px 0;}
+.meta-grid{display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:18px;}
+.meta-item{background:#faf8f5; border:1px solid var(--line); border-radius:12px; padding:10px 12px;}
+.meta-item .lbl{font-size:10px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted-2); font-weight:700; margin-bottom:3px;}
+.meta-item .val{font-size:13px; font-weight:600;}
+.ref-title{font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted-2); font-weight:700; margin-bottom:10px;}
+.ref-list{display:flex; flex-direction:column; gap:10px; margin-bottom:18px;}
+.ref-item{display:flex; align-items:center; gap:12px;}
+.avatar{width:42px;height:42px;border-radius:50%; background:linear-gradient(135deg,#dcdad6,#bdbab5); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:13px; font-family:'Poppins',sans-serif; flex:0 0 auto;}
+.ref-info .ref-name{font-size:13px; font-weight:700;}
+.ref-info .ref-job{font-size:11px; color:var(--muted);}
+.callback-btn{width:100%; border:1.5px solid var(--orange); background:#fff; color:var(--orange-dark); padding:12px 14px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Inter',sans-serif;}
+.callback-btn:active{background:#fff3ea;}
+.form-group{margin-bottom:12px;}
+.form-group label{font-size:11.5px; font-weight:700; display:block; margin-bottom:5px;}
+.form-group input{width:100%; padding:11px 13px; border-radius:12px; border:1.5px solid var(--line); font-size:13.5px; font-family:'Inter',sans-serif; outline:none;}
+.form-group input:focus{border-color:var(--orange);}
+.submit-btn{width:100%; border:none; background:linear-gradient(135deg,#f2793f,#d9481c); color:#fff; padding:13px 14px; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; box-shadow:0 8px 18px -6px rgba(217,72,28,.5);}
+.form-note{font-size:11px; color:var(--muted-2); margin-top:10px; line-height:1.5; text-align:center;}
+
+/* ===== BOTTOM NAV : barre orange, icônes blanches, figée ===== */
+.bottom-nav{
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:520px;
+  background:linear-gradient(135deg,#f2793f 0%, #d9481c 100%);
+  display:flex; z-index:60;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom)) 8px;
+  box-shadow:0 -10px 28px rgba(180,70,20,.28);
+}
+.nav-btn{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:none;
+  padding:8px 4px; cursor:pointer; color:rgba(255,255,255,.72); font-size:10.5px; font-weight:600;
+  font-family:'Inter',sans-serif; border-radius:14px; transition:all .18s ease;
+}
+.nav-btn svg{width:22px; height:22px; stroke:currentColor;}
+.nav-btn.active{color:#fff; background:rgba(255,255,255,.18);}
+.nav-btn.active svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.2));}
+
+.programme{padding:6px 18px 20px 18px;}
+.prog-item{display:flex; gap:14px; margin-bottom:4px; position:relative; padding-bottom:22px;}
+.prog-item:not(:last-child)::before{content:""; position:absolute; left:19px; top:40px; bottom:-2px; width:2px; background:linear-gradient(180deg,#eecdb0,#f3ece4);}
+.prog-icon{flex:0 0 auto; width:38px;height:38px; border-radius:12px; background:linear-gradient(135deg,#fdece1,#fbdcc7); display:flex; align-items:center; justify-content:center; color:var(--orange-dark); box-shadow:0 4px 10px -3px rgba(217,72,28,.25);}
+.prog-time{font-size:10.5px; font-weight:700; color:var(--orange-dark); letter-spacing:.3px; margin-bottom:3px; text-transform:uppercase;}
+.prog-content{background:#fff; border:1px solid var(--line); border-radius:14px; padding:13px 16px; flex:1; box-shadow:0 6px 16px -10px rgba(30,20,10,.1);}
+.prog-content h4{margin:0 0 4px 0; font-size:13.5px; font-family:'Poppins',sans-serif;}
+.prog-content p{margin:2px 0; font-size:11.5px; color:var(--muted); line-height:1.5;}
+.prog-sub{margin:8px 0 0 0; padding-left:0; list-style:none; font-size:11.5px;}
+.prog-sub li{margin-bottom:5px; padding-left:15px; position:relative; color:#3a3937;}
+.prog-sub li::before{content:""; position:absolute; left:0; top:6px; width:5px; height:5px; border-radius:50%; background:var(--orange);}
+
+.feedback-wrap{padding:10px 18px 30px 18px;}
+.fb-hero{background:linear-gradient(135deg,#fff1e6,#fde3d0); border-radius:20px; padding:26px 20px; text-align:center; margin-bottom:18px;}
+.fb-hero .ico-wrap{width:54px;height:54px;border-radius:50%;background:#fff;margin:0 auto 12px auto; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 16px -6px rgba(217,72,28,.35);}
+.fb-hero h3{font-family:'Poppins',sans-serif; font-size:16px; margin:0 0 8px 0;}
+.fb-hero p{font-size:12.5px; color:#5c5a57; line-height:1.6; margin:0 0 18px 0;}
+.fb-cta{display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f2793f,#d9481c); color:#fff; padding:13px 22px; border-radius:14px; font-size:13.5px; font-weight:700; text-decoration:none; box-shadow:0 8px 18px -6px rgba(217,72,28,.5);}
+.fb-points{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+.fb-point{background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px; display:flex; gap:12px; align-items:flex-start; box-shadow:0 6px 16px -10px rgba(30,20,10,.08);}
+.fb-point .fp-ico{width:32px;height:32px;border-radius:9px;background:var(--grey-pale); display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:var(--orange-dark);}
+.fb-point .fp-text{font-size:12px; color:#3a3937; line-height:1.5;}
+.hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img class="pwc-logo" src="data:image/png;base64,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" alt="PwC">
+    <div class="title-block">
+      <span class="t1">Tech Day &mdash; Nantes</span>
+      <span class="t2">D&eacute;monstrations IA &amp; cas d'usage</span>
+    </div>
+  </div>
+  <div class="datebox">
+    <div><b>17 sept. 2026</b></div>
+    <div>13h45 &ndash; 20h00</div>
+  </div>
+</header>
+
+<section id="tab-plan">
+  <div class="section-title"><span class="bar"></span>Parcours sugg&eacute;r&eacute;s</div>
+  <div class="section-sub">Choisissez une th&eacute;matique pour filtrer les corners recommand&eacute;s</div>
+  <div class="parcours-scroll">
+    <button class="chip active" data-parcours="all"><span>Tous les corners</span><span class="n">10</span></button>
+    <button class="chip" data-parcours="1,5,9,10"><span>Finance &amp; Performance</span><span class="n">4</span></button>
+    <button class="chip" data-parcours="2,4,amphi"><span>Data &amp; Automatisation</span><span class="n">3</span></button>
+    <button class="chip" data-parcours="6,7,3"><span>Gouvernance &amp; S&eacute;curit&eacute; IA</span><span class="n">3</span></button>
+    <button class="chip" data-parcours="8"><span>Session Q&amp;A</span><span class="n">1</span></button>
+  </div>
+
+  <div class="corner-list" id="corner-list"></div>
+
+  <div class="map-anchor" id="carte"></div>
+  <div class="map-card">
+    <div class="section-title" style="margin:0 0 4px 0;"><span class="bar"></span>Plan interactif</div>
+    <div class="section-sub" style="margin:0 0 14px 0;">Choisissez un point de d&eacute;part et une destination</div>
+
+    <div class="search-stack">
+      <div class="search-row start">
+        <span class="dot-ico"></span>
+        <select id="select-start" class="placeholder"><option value="" disabled selected>Point de d&eacute;part...</option></select>
+      </div>
+      <div class="search-row end">
+        <span class="dot-ico"></span>
+        <select id="select-end" class="placeholder"><option value="" disabled selected>Destination...</option></select>
+      </div>
+      <button class="swap-btn" id="swap-btn" title="Inverser">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 7h11m0 0-3.5-3.5M18 7l-3.5 3.5M17 17H6m0 0 3.5 3.5M6 17l3.5-3.5" stroke="#1b1b1d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot theme1"></span>Performance op&eacute;rationnelle</span>
+      <span><span class="dot theme2"></span>Pr&eacute;requis transformation IA</span>
+      <span><span class="dot special"></span>Session Q&amp;A</span>
+    </div>
+
+    <div class="map-scroll">
+      <svg id="planmap" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowhead" markerWidth="7" markerHeight="7" refX="3.6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#1b1b1d"></path>
+          </marker>
+          <filter id="softshadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#000" flood-opacity="0.2"/>
+          </filter>
+          <symbol id="ic-table" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+          <symbol id="ic-sofa" viewBox="0 0 24 24"><path d="M4 15v-3a2 2 0 0 1 2-2h1V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h1a2 2 0 0 1 2 2v3M3 15h18v3a1 1 0 0 1-1 1h-1v1h-2v-1H7v1H5v-1H4a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+          <symbol id="ic-man" viewBox="0 0 24 24">
+            <circle cx="12" cy="4.2" r="2.6" fill="currentColor"/>
+            <path d="M9.4 8h5.2c.7 0 1.2.6 1.2 1.3v4.4c0 .5-.4.9-.9.9h-.5V21c0 .6-.4 1-1 1h-1.1c-.6 0-1-.4-1-1v-6.4h-.6V21c0 .6-.4 1-1 1H8.6c-.6 0-1-.4-1-1v-6.4H7.1c-.5 0-.9-.4-.9-.9V9.3C6.2 8.6 6.7 8 7.4 8h2Z" fill="currentColor"/>
+          </symbol>
+          <symbol id="ic-woman" viewBox="0 0 24 24">
+            <circle cx="12" cy="4.2" r="2.6" fill="currentColor"/>
+            <path d="M12 7.4c-1.9 0-3.4 1.2-3.9 2.9l-1.5 4.8c-.2.6.3 1.2.9 1.2h1.3l-.4 3.8c-.1.6.4 1.1 1 1.1h1.1v-5.1h1v5.1h1.1c.6 0 1.1-.5 1-1.1l-.4-3.8h1.3c.6 0 1.1-.6.9-1.2l-1.5-4.8c-.5-1.7-2-2.9-3.9-2.9Z" fill="currentColor"/>
+          </symbol>
+          <symbol id="ic-hanger" viewBox="0 0 24 24"><path d="M12 3a1.5 1.5 0 1 1 1.5 1.5H12v1.3l8 4.7v1.5H4v-1.5l8-4.7V4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+          <symbol id="ic-cup" viewBox="0 0 24 24"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 9.5h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5c0 1-1 1-1 2m5-2c0 1-1 1-1 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+          <symbol id="ic-stairs" viewBox="0 0 24 24"><path d="M4 20v-4h4v-4h4V8h4V4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+          <symbol id="ic-locker" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="3" x2="12" y2="21" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="12" r=".9" fill="currentColor"/><circle cx="15" cy="12" r=".9" fill="currentColor"/></symbol>
+          <symbol id="ic-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 11a6 6 0 0 0 12 0M12 17v3m-3 0h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+        </defs>
+
+        <text x="837" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#9a968f" font-family="Inter">Salles de r&#233;union (hors corners)</text>
+        <rect x="684.0" y="14.0" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="747.5" y="55.75" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="841.0" y="14.0" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="904.5" y="55.75" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="684.0" y="127.5" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="747.5" y="169.25" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="841.0" y="127.5" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="904.5" y="169.25" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="684.0" y="241.0" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="747.5" y="282.75" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="841.0" y="241.0" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="904.5" y="282.75" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="684.0" y="354.5" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="747.5" y="396.25" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="841.0" y="354.5" width="149.0" height="105.5" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="904.5" y="396.25" width="22" height="22" color="#c8c3ba"></use>
+
+        <!-- Corners haut -->
+        <rect x="10" y="42" width="232" height="128" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-sofa" x="112" y="120" width="28" height="28" color="#c8c3ba"></use>
+        <rect x="252" y="42" width="90" height="128" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-table" x="286" y="128" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="352" y="42" width="90" height="128" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-table" x="386" y="128" width="22" height="22" color="#c8c3ba"></use>
+        <rect x="452" y="42" width="196" height="128" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-table" x="536" y="128" width="26" height="26" color="#c8c3ba"></use>
+
+        <!-- Vestiaire -->
+        <rect x="252" y="230" width="90" height="66" rx="6" fill="#eef2fb" stroke="#c7d3ec" stroke-width="2"></rect>
+        <use href="#ic-hanger" x="285" y="240" width="24" height="24" color="#5b76ad"></use>
+        <text x="297" y="286" text-anchor="middle" font-size="9.5" font-weight="700" fill="#3f558c" font-family="Inter">Vestiaire</text>
+
+        <!-- WC séparés -->
+        <rect x="252" y="308" width="90" height="52" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-man" x="273" y="316" width="20" height="20" color="#4a6fa8"></use>
+        <text x="308" y="340" font-size="9" font-weight="700" fill="#767472" font-family="Inter">WC H</text>
+
+        <rect x="252" y="370" width="90" height="52" rx="6" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-woman" x="273" y="378" width="20" height="20" color="#b0537f"></use>
+        <text x="308" y="402" font-size="9" font-weight="700" fill="#767472" font-family="Inter">WC F</text>
+
+        <!-- Escalier -->
+        <rect x="252" y="432" width="90" height="60" rx="6" fill="#f4f2ef" stroke="#dcd7cf" stroke-width="1.4"></rect>
+        <use href="#ic-stairs" x="286" y="443" width="22" height="22" color="#a6a3a0"></use>
+        <text x="297" y="482" text-anchor="middle" font-size="9" fill="#a6a3a0" font-family="Inter">Escalier</text>
+        <use href="#ic-locker" x="316" y="440" width="16" height="16" color="#c8c3ba"></use>
+
+        <!-- Accueil -->
+        <rect x="10" y="230" width="232" height="262" rx="8" fill="#fdf0e6" stroke="#eecdb0" stroke-width="2"></rect>
+        <path d="M30 250 Q70 235 110 250" fill="none" stroke="#e8b98c" stroke-width="4" stroke-linecap="round"></path>
+        <text x="120" y="410" text-anchor="middle" font-size="13" font-weight="700" fill="#c15a1f" font-family="Poppins">ACCUEIL</text>
+
+        <!-- Amphi -->
+        <rect x="452" y="230" width="196" height="262" rx="8" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <text x="550" y="256" text-anchor="middle" font-size="13" font-weight="700" fill="#c15a1f" font-family="Poppins">AMPHI</text>
+        <text x="550" y="272" text-anchor="middle" font-size="9" fill="#a6a3a0" font-family="Inter">Pl&#233;ni&#232;re &amp; table ronde</text>
+        <use href="#ic-mic" x="538" y="420" width="24" height="24" color="#c8c3ba"></use>
+
+        <!-- filler droite haute -->
+        <rect x="684" y="470" width="118" height="70" rx="6" fill="#fbf9f6" stroke="#d8d3cb" stroke-width="2.2"></rect>
+        <use href="#ic-table" x="724" y="494" width="22" height="22" color="#c8c3ba"></use>
+
+        <!-- Cafétéria -->
+        <rect x="10" y="512" width="332" height="164" rx="8" fill="#fdf0e6" stroke="#eecdb0" stroke-width="2"></rect>
+        <use href="#ic-cup" x="28" y="522" width="22" height="22" color="#c15a1f"></use>
+        <text x="56" y="538" font-size="11" font-weight="700" fill="#c15a1f" font-family="Poppins">CAF&#201;T&#201;RIA</text>
+        <use href="#ic-locker" x="308" y="522" width="16" height="16" color="#e0b98c"></use>
+
+        <!-- Salle Q&A -->
+        <rect x="360" y="522" width="90" height="94" rx="8" fill="#eaf4ec" stroke="#bcdcc0" stroke-width="2"></rect>
+        <text x="405" y="545" text-anchor="middle" font-size="10.5" font-weight="700" fill="#3f8a52" font-family="Poppins">Q&amp;A</text>
+        <rect x="360" y="628" width="90" height="48" rx="6" fill="#f4f2ef" stroke="#dcd7cf" stroke-width="1.4"></rect>
+
+        <!-- Aile droite -->
+        <rect x="684" y="512" width="306" height="120" rx="8" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <use href="#ic-table" x="822" y="600" width="28" height="28" color="#c8c3ba"></use>
+        <rect x="684" y="664" width="140" height="60" rx="8" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <rect x="684" y="732" width="140" height="56" rx="8" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+        <rect x="845" y="664" width="145" height="124" rx="8" fill="#fbf9f6" stroke="#c9c3ba" stroke-width="2"></rect>
+
+        <!-- Route -->
+        <path id="route-glow" fill="none" stroke="#e8622c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0"></path>
+        <path id="route-path" fill="none" stroke="#1b1b1d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 9" opacity="0" marker-end="url(#arrowhead)"></path>
+
+        <g id="pins-layer"></g>
+        <g id="start-marker-layer"></g>
+      </svg>
+    </div>
+
+    <div class="route-instructions" id="route-instructions">
+      <div class="ri-head"><span id="ri-title">Itin&eacute;raire</span><span id="ri-clear" style="cursor:pointer; text-decoration:underline;">Effacer</span></div>
+      <div id="ri-steps"></div>
+    </div>
+    <div class="route-hint" id="route-hint">S&eacute;lectionnez un point de d&eacute;part et une destination pour afficher l'itin&eacute;raire.</div>
+  </div>
+</section>
+
+<section id="tab-programme" class="programme hidden">
+  <div class="prog-item">
+    <div class="prog-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 20c0-2.8 2.2-5 5-5s5 2.2 5 5M12 20c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="prog-content"><div class="prog-time">13h45 &ndash; 14h15</div><h4>Accueil caf&eacute;</h4></div>
+  </div>
+  <div class="prog-item">
+    <div class="prog-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1Zm13-4a5 5 0 0 1 0 10m0-14a9 9 0 0 1 0 18" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="prog-content">
+      <div class="prog-time">14h15 &ndash; 14h45</div>
+      <h4>Introduction &amp; keynote d'ouverture</h4>
+      <p>PwC Digest VivaTech &mdash; que faut-il retenir des tendances tech 2026 ?</p>
+    </div>
+  </div>
+  <div class="prog-item">
+    <div class="prog-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 12h8M8 16h5M21 12c0 4.4-4 8-9 8a9.7 9.7 0 0 1-4-.8L3 20l1-4.2A8 8 0 0 1 3 12c0-4.4 4-8 9-8s9 3.6 9 8Z" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="prog-content">
+      <div class="prog-time">14h45 &ndash; 15h30</div>
+      <h4>Retour d'exp&eacute;rience client</h4>
+      <p>De l'id&eacute;e &agrave; l'impact : comment le Groupe Eram m&egrave;ne sa transformation IA</p>
+      <p><b>Samuel Angebault</b> &mdash; Responsable Organisation et D&eacute;ploiement IA, Groupe Eram</p>
+      <p><b>Pierre Capelle</b> &mdash; Expert Data &amp; IA, PwC France</p>
+    </div>
+  </div>
+  <div class="prog-item">
+    <div class="prog-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Zm-3 15h6M12 17v4" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10a7 7 0 0 0 14 0" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="prog-content">
+      <div class="prog-time">15h30 &ndash; 18h30</div>
+      <h4>Ateliers immersifs : d&eacute;monstrations interactives</h4>
+      <p style="margin-top:6px;"><b>Th&eacute;matique 1</b> &mdash; L'IA au service de la performance op&eacute;rationnelle</p>
+      <ul class="prog-sub">
+        <li><b>Flowie</b> &mdash; Unifier et automatiser les processus Achats, Finance et Ventes</li>
+        <li><b>Harvey</b> &mdash; Acc&eacute;l&eacute;rer la recherche juridique, la r&eacute;daction et la revue contractuelle</li>
+        <li><b>AtypIA</b> &mdash; D&eacute;tecter les anomalies invisibles &agrave; vos contr&ocirc;les</li>
+        <li><b>Microsoft Copilot Cowork</b> &mdash; Flux de travail complexes dans Microsoft 365</li>
+        <li><b>SAP</b> &mdash; Orchestrer vos processus ERP en langage naturel</li>
+        <li><b>Business Solution Explorer</b> &mdash; Explorer l'&eacute;cosyst&egrave;me technologique PwC</li>
+        <li><b>Third Party Shaker</b> &mdash; &Eacute;valuer vos tiers et piloter vos risques</li>
+        <li><b>Pigment</b> (Amphi) &mdash; Piloter Finance, RH, Ventes et Supply Chain en temps r&eacute;el</li>
+      </ul>
+      <p style="margin-top:8px;"><b>Th&eacute;matique 2</b> &mdash; Les pr&eacute;requis pour r&eacute;ussir une transformation IA</p>
+      <ul class="prog-sub">
+        <li><b>TrustAI</b> &mdash; Ma&icirc;triser les risques de l'IA et s&eacute;curiser vos donn&eacute;es</li>
+        <li><b>AI Fitness</b> &mdash; &Eacute;valuer la maturit&eacute; IA de votre entreprise</li>
+      </ul>
+      <p style="margin-top:8px;"><b>Session sp&eacute;ciale</b></p>
+      <ul class="prog-sub">
+        <li><b>Salle Q&amp;A</b> &mdash; Questions / r&eacute;ponses avec Samuel Angebault</li>
+      </ul>
+    </div>
+  </div>
+  <div class="prog-item">
+    <div class="prog-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M5 4h14l-7 10L5 4Z" stroke="#c15a1f" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 14v6m-3 0h6" stroke="#c15a1f" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M8 6.5h8" stroke="#c15a1f" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="prog-content"><div class="prog-time">18h30 &ndash; 20h00</div><h4>Cocktail et networking</h4></div>
+  </div>
+</section>
+
+<section id="tab-feedback" class="feedback-wrap hidden">
+  <div class="fb-hero">
+    <div class="ico-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 17.3 6.2 21l1.6-6.6L2 10.2l6.7-.6L12 3.5l3.3 6.1 6.7.6-5.8 4.2 1.6 6.6Z" fill="#e8622c"/></svg></div>
+    <h3>Votre avis compte</h3>
+    <p>2 minutes pour nous aider &agrave; am&eacute;liorer la prochaine &eacute;dition du Tech Day. Vos r&eacute;ponses sont transmises directement &agrave; l'&eacute;quipe organisatrice.</p>
+    <a class="fb-cta" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=oJQyUSA-skGpcG0wvxVG-oaruzbFKD9Gnd3B0BqM5oJUQ1cxRzA1SUw3U0wzQzcxVzYxNENQSU5ENS4u" target="_blank" rel="noopener">
+      R&eacute;pondre au questionnaire
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M8 7h9v9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="fb-points">
+    <div class="fb-point">
+      <div class="fp-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 17.3 6.2 21l1.6-6.6L2 10.2l6.7-.6L12 3.5l3.3 6.1 6.7.6-5.8 4.2 1.6 6.6Z" stroke="#c15a1f" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      <div class="fp-text"><b>Satisfaction &amp; recommandation</b><br>Note globale sur l'&eacute;v&eacute;nement et probabilit&eacute; de le recommander.</div>
+    </div>
+    <div class="fb-point">
+      <div class="fp-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 3.5V5Z" stroke="#c15a1f" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 9h8M8 12.5h5" stroke="#c15a1f" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="fp-text"><b>Contenu</b><br>Session pr&eacute;f&eacute;r&eacute;e et sujets souhait&eacute;s pour la prochaine &eacute;dition.</div>
+    </div>
+    <div class="fb-point">
+      <div class="fp-ico">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+          <circle cx="8" cy="8.5" r="2.6" stroke="#c15a1f" stroke-width="1.7"/>
+          <circle cx="16.5" cy="9.5" r="2.1" stroke="#c15a1f" stroke-width="1.7"/>
+          <path d="M3 19.5c0-2.6 2.2-4.6 5-4.6s5 2 5 4.6" stroke="#c15a1f" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M14.2 15.2c2.3.2 4 1.9 4 4.3" stroke="#c15a1f" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="fp-text"><b>Organisation &amp; networking</b><br>Dur&eacute;e de l'&eacute;v&eacute;nement, informations re&ccedil;ues, &eacute;changes avec les autres participants.</div>
+    </div>
+  </div>
+</section>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="plan">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 20l-5.5-2.5V4L9 6.5m0 13.5 6-2.5m-6 2.5V6.5m6 11 5.5 2.5V6L15 3.5M9 6.5l6 0" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Plan
+  </button>
+  <button class="nav-btn" data-tab="programme">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke-width="1.9"/><path d="M3 9.5h18M8 3v4M16 3v4" stroke-width="1.9" stroke-linecap="round"/></svg>
+    Programme
+  </button>
+  <button class="nav-btn" data-tab="feedback">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 17.3 6.2 21l1.6-6.6L2 10.2l6.7-.6L12 3.5l3.3 6.1 6.7.6-5.8 4.2 1.6 6.6Z" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    Feedback
+  </button>
+</nav>
+
+<div class="sheet-overlay" id="detail-overlay">
+  <div class="sheet">
+    <button class="sheet-close" id="detail-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="#1b1b1d" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="sheet-handle"></div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<div class="sheet-overlay" id="callback-overlay">
+  <div class="sheet">
+    <button class="sheet-close" id="callback-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="#1b1b1d" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="sheet-handle"></div>
+    <h3 style="font-family:'Poppins',sans-serif; font-size:17px; margin:4px 0 4px 0;">&Ecirc;tre rappel&eacute;(e)</h3>
+    <p style="font-size:12px; color:var(--muted); margin:0 0 18px 0;" id="callback-context">Concernant : Corner</p>
+    <div class="form-group"><label>Pr&eacute;nom</label><input type="text" id="cb-prenom" placeholder="Votre pr&eacute;nom"></div>
+    <div class="form-group"><label>Nom</label><input type="text" id="cb-nom" placeholder="Votre nom"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="cb-email" placeholder="vous@entreprise.com"></div>
+    <div class="form-group"><label>T&eacute;l&eacute;phone</label><input type="tel" id="cb-tel" placeholder="06 xx xx xx xx"></div>
+    <button class="submit-btn" id="cb-submit">Envoyer ma demande</button>
+    <p class="form-note">En cliquant sur envoyer, votre application mail s'ouvrira avec un message pr&eacute;-rempli &agrave; destination de l'&eacute;quipe organisatrice.</p>
+  </div>
+</div>
+
+<script>
+const corners = {
+  "1": {num:"1", name:"Flowie", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"Unifier et automatiser les processus Achats, Finance et Ventes gr\u00e2ce \u00e0 l'IA.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"R\u00e9mi Legorrec", job:"Cofondateur & Chief Growth Officer, Flowie"},
+          {name:"Baptiste Carrere", job:"VP Sales, Flowie"},
+          {name:"Jean-Pierre Sizun", job:"Partnership Director, Flowie"}]},
+  "2": {num:"2", name:"Harvey", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"Acc\u00e9l\u00e9rer la recherche juridique, la r\u00e9daction et la revue contractuelle gr\u00e2ce \u00e0 l'IA.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Lambert Demma", job:"Senior Associate - Advisory, PwC"},
+          {name:"C\u00e9line Gadby", job:"Directrice - Advisory, PwC"}]},
+  "3": {num:"3", name:"AtypIA", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"D\u00e9tecter dans vos donn\u00e9es ce que vos contr\u00f4les ne voient pas et identifier plus facilement les anomalies sur de grands volumes gr\u00e2ce \u00e0 l'IA.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Gabriel De Longeaux", job:"Senior Manager - Advisory, PwC"},
+          {name:"Herv\u00e9 Giraud", job:"Directeur - Advisory, PwC"}]},
+  "4": {num:"4", name:"Microsoft Copilot Cowork", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"Planifier et r\u00e9aliser vos flux de travail complexes en arri\u00e8re-plan dans Microsoft 365 gr\u00e2ce \u00e0 l'IA.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Florent Durisotti", job:"Manager - Internal Firm Services, PwC"}]},
+  "5": {num:"5", name:"SAP", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"Orchestrer vos processus ERP en langage naturel et acc\u00e9l\u00e9rer la prise de d\u00e9cision gr\u00e2ce \u00e0 l'IA g\u00e9n\u00e9rative et agentique de SAP.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Wilfrid R\u00e9al", job:"Directeur - Advisory, PwC"},
+          {name:"Martial Gorse", job:"SAP"},
+          {name:"Nicolas Perrier", job:"SAP"}]},
+  "6": {num:"6", name:"TrustAI", theme:"theme2", themeLabel:"Pr\u00e9requis transformation IA",
+    desc:"Ma\u00eetriser les risques de l'IA et prot\u00e9ger vos donn\u00e9es pour un d\u00e9ploiement s\u00e9curis\u00e9 \u00e0 grande \u00e9chelle.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Luc Frantz", job:"Senior Manager - Advisory, PwC"},
+          {name:"Simon Glusman", job:"Ceyra"}]},
+  "7": {num:"7", name:"AI Fitness", theme:"theme2", themeLabel:"Pr\u00e9requis transformation IA",
+    desc:"\u00c9valuer la maturit\u00e9 IA de votre entreprise pour structurer et acc\u00e9l\u00e9rer votre feuille de route de transformation.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Augustin Ausseur", job:"Manager - Advisory, PwC"},
+          {name:"Pierre Capelle", job:"Partner - Advisory, PwC"}]},
+  "8": {num:"8", name:"Salle Q&A", theme:"special", themeLabel:"Session Q&A",
+    desc:"Session de questions-r\u00e9ponses avec Samuel Angebault, en compl\u00e9ment du retour d'exp\u00e9rience Groupe Eram. [Descriptif \u00e0 confirmer]",
+    horaire:"\u00c0 confirmer",
+    refs:[{name:"Samuel Angebault", job:"Responsable Organisation et D\u00e9ploiement IA, Groupe Eram"}]},
+  "9": {num:"9", name:"Business Solution Explorer", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"D\u00e9couvrir l'\u00e9cosyst\u00e8me technologique PwC.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Agathe de Pommerol", job:"Senior Associate - Advisory, PwC"},
+          {name:"Nicolas Bousqui\u00e9", job:"Senior Manager - Advisory, PwC"}]},
+  "10": {num:"10", name:"Third Party Shaker", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"\u00c9valuer vos tiers plus rapidement et piloter vos risques gr\u00e2ce \u00e0 une offre digitale enrichie par l'IA.",
+    horaire:"Acc\u00e8s libre 15h30 - 18h30",
+    refs:[{name:"Paul Sajot", job:"Associ\u00e9 - Advisory, PwC"},
+          {name:"Steven David", job:"Senior Manager - Advisory, PwC"}]},
+  "amphi": {num:"", name:"Pigment (Amphi)", theme:"theme1", themeLabel:"Performance op\u00e9rationnelle",
+    desc:"Unifier Finance, RH, Ventes et Supply Chain pour piloter la performance en temps r\u00e9el gr\u00e2ce \u00e0 l'IA.",
+    horaire:"Session pl\u00e9ni\u00e8re",
+    refs:[{name:"Yacine Ibourichene", job:"Associate - Advisory, PwC"},
+          {name:"Anis Benstitou", job:"Responsable de compte, Pigment"},
+          {name:"Vincent Storai", job:"Directeur - Advisory, PwC"},
+          {name:"Arthur Lebedel", job:"Responsable de compte, Pigment"}]}
+};
+
+const nodes = {"h1_c1": {"x": 126, "y": 200}, "h1_v2": {"x": 242, "y": 200}, "h1_c2": {"x": 297, "y": 200}, "h1_v1": {"x": 397, "y": 200}, "h1_c3": {"x": 397, "y": 200}, "h1_c4": {"x": 550, "y": 200}, "h1_right": {"x": 669, "y": 200}, "v2_accueil": {"x": 242, "y": 361}, "v2_bottom": {"x": 242, "y": 502}, "v1_wch": {"x": 397, "y": 334}, "v1_wcf": {"x": 397, "y": 396}, "v1_esc": {"x": 397, "y": 462}, "v1_bottom": {"x": 397, "y": 502}, "h2_cafe": {"x": 150, "y": 502}, "h2_qa": {"x": 405, "y": 502}, "h2_amphi": {"x": 550, "y": 502}, "h2_right": {"x": 669, "y": 502}, "v3_h3": {"x": 669, "y": 648}, "h3_c6": {"x": 754, "y": 648}, "h3_v4": {"x": 829, "y": 648}, "h3_c5": {"x": 837, "y": 648}, "h3_c7": {"x": 900, "y": 648}, "v4_c10": {"x": 829, "y": 760}, "c1": {"x": 126, "y": 106}, "c2": {"x": 297, "y": 106}, "c3": {"x": 397, "y": 106}, "c4": {"x": 550, "y": 106}, "vestiaire": {"x": 297, "y": 263}, "wc_h": {"x": 297, "y": 334}, "wc_f": {"x": 297, "y": 396}, "escalier": {"x": 297, "y": 462}, "accueil": {"x": 120, "y": 361}, "amphi": {"x": 550, "y": 361}, "cafeteria": {"x": 150, "y": 594}, "qa": {"x": 405, "y": 569}, "c5": {"x": 837, "y": 577}, "c6": {"x": 754, "y": 689}, "c10": {"x": 754, "y": 760}, "c7": {"x": 900, "y": 721}};
+const edges = [["h1_c1", "h1_v2"], ["h1_v2", "h1_c2"], ["h1_c2", "h1_v1"], ["h1_v1", "h1_c4"], ["h1_c4", "h1_right"], ["h1_v2", "v2_accueil"], ["v2_accueil", "v2_bottom"], ["h1_v1", "v1_wch"], ["v1_wch", "v1_wcf"], ["v1_wcf", "v1_esc"], ["v1_esc", "v1_bottom"], ["h2_cafe", "v2_bottom"], ["v2_bottom", "v1_bottom"], ["v1_bottom", "h2_qa"], ["h2_qa", "h2_amphi"], ["h2_amphi", "h2_right"], ["h1_right", "h2_right"], ["h2_right", "v3_h3"], ["v3_h3", "h3_c6"], ["h3_c6", "h3_v4"], ["h3_v4", "h3_c5"], ["h3_c5", "h3_c7"], ["h3_v4", "v4_c10"], ["h1_c1", "c1"], ["h1_c2", "c2"], ["h1_c3", "c3"], ["h1_c4", "c4"], ["h1_c2", "vestiaire"], ["v1_wch", "wc_h"], ["v1_wcf", "wc_f"], ["v1_esc", "escalier"], ["v2_accueil", "accueil"], ["h1_c4", "amphi"], ["h2_amphi", "amphi"], ["h2_cafe", "cafeteria"], ["h2_qa", "qa"], ["h3_c5", "c5"], ["h3_c6", "c6"], ["h3_c7", "c7"], ["v4_c10", "c10"]];
+
+const cornerNode = {"1":"c1","2":"c2","3":"c3","4":"c4","5":"c5","6":"c6","7":"c7","8":"qa","9":"cafeteria","10":"c10","amphi":"amphi"};
+
+const destinations = [
+  {id:"accueil",  label:"Accueil"},
+  {id:"c1",       label:"Corner 1 \u2013 Flowie"},
+  {id:"c2",       label:"Corner 2 \u2013 Harvey"},
+  {id:"c3",       label:"Corner 3 \u2013 AtypIA"},
+  {id:"c4",       label:"Corner 4 \u2013 Microsoft Copilot Cowork"},
+  {id:"c5",       label:"Corner 5 \u2013 SAP"},
+  {id:"c6",       label:"Corner 6 \u2013 TrustAI"},
+  {id:"c7",       label:"Corner 7 \u2013 AI Fitness"},
+  {id:"qa",       label:"Corner 8 \u2013 Salle Q&A"},
+  {id:"cafeteria",label:"Corner 9 \u2013 Caf\u00e9t\u00e9ria / Business Solution Explorer"},
+  {id:"c10",      label:"Corner 10 \u2013 Third Party Shaker"},
+  {id:"amphi",    label:"Amphi \u2013 Pigment"},
+  {id:"vestiaire",label:"Vestiaire"},
+  {id:"wc_h",     label:"WC Hommes"},
+  {id:"wc_f",     label:"WC Femmes"},
+  {id:"escalier", label:"Escalier"}
+];
+
+function buildGraph(){
+  const g = {};
+  Object.keys(nodes).forEach(id => g[id] = []);
+  edges.forEach(function(e){
+    const a=e[0], b=e[1];
+    const dx = nodes[a].x-nodes[b].x, dy = nodes[a].y-nodes[b].y;
+    const w = Math.sqrt(dx*dx+dy*dy);
+    g[a].push({to:b,w:w}); g[b].push({to:a,w:w});
+  });
+  return g;
+}
+const graph = buildGraph();
+
+function shortestPath(start,end){
+  const dist={},prev={};
+  Object.keys(nodes).forEach(id=>dist[id]=Infinity);
+  dist[start]=0;
+  const q=new Set(Object.keys(nodes));
+  while(q.size){
+    let u=null,best=Infinity;
+    q.forEach(id=>{ if(dist[id]<best){best=dist[id];u=id;} });
+    if(u===null) break;
+    q.delete(u);
+    if(u===end) break;
+    graph[u].forEach(e=>{
+      const alt=dist[u]+e.w;
+      if(alt<dist[e.to]){ dist[e.to]=alt; prev[e.to]=u; }
+    });
+  }
+  if(dist[end]===Infinity) return [];
+  const path=[]; let cur=end;
+  while(cur!==undefined){ path.unshift(cur); cur=prev[cur]; }
+  return path;
+}
+
+const selStart=document.getElementById('select-start');
+const selEnd=document.getElementById('select-end');
+destinations.forEach(d=>{
+  const o1=document.createElement('option'); o1.value=d.id; o1.textContent=d.label; selStart.appendChild(o1);
+  const o2=document.createElement('option'); o2.value=d.id; o2.textContent=d.label; selEnd.appendChild(o2);
+});
+
+const pinsLayer=document.getElementById('pins-layer');
+function themeColor(t){ return t==='theme2' ? '#2a4f9c' : (t==='special' ? '#5c5a57' : '#e8622c'); }
+
+function renderPins(){
+  pinsLayer.innerHTML='';
+  Object.keys(cornerNode).forEach(cid=>{
+    const n=nodes[cornerNode[cid]];
+    const c=corners[cid];
+    const color=themeColor(c.theme);
+    const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.style.cursor='pointer';
+    const label=c.name;
+    const right = n.x < 800;
+    const lx = right ? n.x+20 : n.x-20;
+    const anchor = right ? "start" : "end";
+    const rx = right ? n.x+11 : n.x-11-label.length*6.3;
+    g.innerHTML =
+      '<circle cx="'+n.x+'" cy="'+n.y+'" r="18" fill="'+color+'" opacity="0.14"></circle>'+
+      '<circle cx="'+n.x+'" cy="'+n.y+'" r="12.5" fill="'+color+'" stroke="#fff" stroke-width="2" filter="url(#softshadow)"></circle>'+
+      '<text x="'+n.x+'" y="'+(n.y+1)+'" text-anchor="middle" dominant-baseline="central" font-family="Poppins" font-weight="700" font-size="10.5" fill="#fff">'+(c.num||'A')+'</text>'+
+      '<rect x="'+rx+'" y="'+(n.y-9.5)+'" width="'+(label.length*6.3+10)+'" height="19" rx="5" fill="#fff" stroke="#e5e0d8" stroke-width="1" opacity="0.97"></rect>'+
+      '<text x="'+lx+'" y="'+(n.y+4)+'" text-anchor="'+anchor+'" font-family="Inter" font-weight="700" font-size="10.5" fill="#1b1b1d">'+label+'</text>';
+    pinsLayer.appendChild(g);
+    g.addEventListener('click', ()=>openDetail(cid));
+  });
+}
+renderPins();
+
+const startMarkerLayer=document.getElementById('start-marker-layer');
+function renderStartMarker(id){
+  startMarkerLayer.innerHTML='';
+  if(!id||!nodes[id]) return;
+  const n=nodes[id];
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.innerHTML =
+    '<circle cx="'+n.x+'" cy="'+n.y+'" r="16" fill="none" stroke="#1b1b1d" stroke-width="1.4" opacity="0.45">'+
+    '<animate attributeName="r" values="7;21" dur="2.2s" repeatCount="indefinite"/>'+
+    '<animate attributeName="opacity" values="0.55;0" dur="2.2s" repeatCount="indefinite"/></circle>'+
+    '<circle cx="'+n.x+'" cy="'+n.y+'" r="6.5" fill="#1b1b1d" stroke="#fff" stroke-width="2"></circle>';
+  startMarkerLayer.appendChild(g);
+}
+
+const routePath=document.getElementById('route-path');
+const routeGlow=document.getElementById('route-glow');
+const riBox=document.getElementById('route-instructions');
+const riSteps=document.getElementById('ri-steps');
+const riTitle=document.getElementById('ri-title');
+const routeHint=document.getElementById('route-hint');
+
+function labelFor(id){ const d=destinations.find(x=>x.id===id); return d?d.label:id; }
+function angleOf(a,b){ return Math.atan2(b.y-a.y,b.x-a.x); }
+function norm(a){ while(a>Math.PI)a-=2*Math.PI; while(a<-Math.PI)a+=2*Math.PI; return a; }
+
+function buildInstructions(path){
+  if(path.length<2) return [];
+  const steps=[{text:"Depuis "+labelFor(path[0])+", rejoignez le couloir.", dir:"straight"}];
+  for(let i=1;i<path.length-1;i++){
+    const prevSeg=angleOf(nodes[path[i-1]],nodes[path[i]]);
+    const seg=angleOf(nodes[path[i]],nodes[path[i+1]]);
+    const diff=norm(seg-prevSeg);
+    const deg=Math.abs(diff*180/Math.PI);
+    if(deg<25) continue;
+    steps.push({text: diff>0 ? "Tournez \u00e0 droite." : "Tournez \u00e0 gauche.", dir: diff>0?"right":"left"});
+  }
+  steps.push({text:"Vous \u00eates arriv\u00e9 \u00e0 : "+labelFor(path[path.length-1])+".", dir:"end"});
+  return steps;
+}
+function iconFor(d){
+  if(d==="left")  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 7 4 12l5 5M4 12h11a5 5 0 0 1 5 5v1" stroke="#c15a1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  if(d==="right") return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 7l5 5-5 5M20 12H9a5 5 0 0 0-5 5v1" stroke="#c15a1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  if(d==="end")   return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#c15a1f" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="#c15a1f"/></svg>';
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 19V5m0 0-5 5m5-5 5 5" stroke="#c15a1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function drawRoute(a,b){
+  const path=shortestPath(a,b);
+  if(path.length<2){ clearRoute(); return; }
+  const d=path.map((id,i)=>(i===0?"M":"L")+nodes[id].x+","+nodes[id].y).join(" ");
+  routePath.setAttribute('d',d); routeGlow.setAttribute('d',d);
+  routePath.setAttribute('opacity','1'); routeGlow.setAttribute('opacity','0.20');
+  renderStartMarker(a);
+  riSteps.innerHTML=buildInstructions(path).map(s=>'<div class="ri-step"><span class="ri-ico">'+iconFor(s.dir)+'</span><span>'+s.text+'</span></div>').join('');
+  riTitle.textContent="De "+labelFor(a)+" vers "+labelFor(b);
+  riBox.classList.add('visible'); routeHint.style.display='none';
+}
+function clearRoute(){
+  routePath.setAttribute('opacity','0'); routeGlow.setAttribute('opacity','0');
+  riBox.classList.remove('visible'); routeHint.style.display='block';
+  startMarkerLayer.innerHTML='';
+}
+document.getElementById('ri-clear').addEventListener('click',()=>{
+  selStart.value=""; selStart.classList.add('placeholder');
+  selEnd.value="";   selEnd.classList.add('placeholder');
+  clearRoute();
+});
+function tryDrawRoute(){
+  const s=selStart.value,e=selEnd.value;
+  s?selStart.classList.remove('placeholder'):selStart.classList.add('placeholder');
+  e?selEnd.classList.remove('placeholder'):selEnd.classList.add('placeholder');
+  if(s&&e&&s!==e) drawRoute(s,e); else clearRoute();
+}
+selStart.addEventListener('change',tryDrawRoute);
+selEnd.addEventListener('change',tryDrawRoute);
+document.getElementById('swap-btn').addEventListener('click',()=>{
+  const t=selStart.value; selStart.value=selEnd.value; selEnd.value=t; tryDrawRoute();
+});
+
+const cornerListEl=document.getElementById('corner-list');
+const cornerOrder=["1","2","3","4","5","6","7","8","9","10","amphi"];
+function renderCornerList(ids){
+  cornerListEl.innerHTML=cornerOrder.filter(id=>ids.indexOf(id)>-1).map(id=>{
+    const c=corners[id];
+    const bc = c.theme==='theme2'?'theme2':(c.theme==='special'?'special':'');
+    return '<div class="corner-row"><div class="badge '+bc+'">'+(c.num||'A')+'</div>'+
+      '<div class="info"><div class="name">'+c.name+'</div><div class="theme">'+c.themeLabel+'</div></div>'+
+      '<button class="goto-btn" data-goto="'+id+'">Y aller<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0-5-5m5 5-5 5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+  }).join('');
+  document.querySelectorAll('[data-goto]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      selEnd.value=cornerNode[btn.dataset.goto];
+      tryDrawRoute();
+      document.getElementById('carte').scrollIntoView({behavior:'smooth',block:'start'});
+      if(!selStart.value) selStart.focus();
+    });
+  });
+}
+renderCornerList(cornerOrder);
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    const v=chip.dataset.parcours;
+    renderCornerList(v==='all'?cornerOrder:v.split(','));
+  });
+});
+
+const detailOverlay=document.getElementById('detail-overlay');
+const detailContent=document.getElementById('detail-content');
+function initials(n){ return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function openDetail(cid){
+  const c=corners[cid];
+  const title = c.num ? ("Corner "+c.num+" \u2014 "+c.name) : c.name;
+  detailContent.innerHTML =
+    '<span class="tag '+c.theme+'">'+c.themeLabel+'</span>'+
+    '<div class="sheet-title">'+title+'</div>'+
+    '<div class="sheet-desc">'+c.desc+'</div>'+
+    '<div class="meta-grid"><div class="meta-item"><div class="lbl">Horaire</div><div class="val">'+c.horaire+'</div></div></div>'+
+    '<div class="ref-title">R\u00e9f\u00e9rents sur place</div>'+
+    '<div class="ref-list">'+c.refs.map(r=>'<div class="ref-item"><div class="avatar">'+initials(r.name)+'</div><div class="ref-info"><div class="ref-name">'+r.name+'</div><div class="ref-job">'+r.job+'</div></div></div>').join('')+'</div>'+
+    '<button class="callback-btn" id="open-callback"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 17.3 6.2 21l1.6-6.6L2 10.2l6.7-.6L12 3.5l3.3 6.1 6.7.6-5.8 4.2 1.6 6.6Z" stroke="#c15a1f" stroke-width="1.5" stroke-linejoin="round"/></svg>J\'aimerais \u00eatre rappel\u00e9(e)</button>';
+  document.getElementById('open-callback').addEventListener('click',()=>openCallback(cid));
+  detailOverlay.classList.add('open');
+}
+document.getElementById('detail-close').addEventListener('click',()=>detailOverlay.classList.remove('open'));
+detailOverlay.addEventListener('click',e=>{ if(e.target===detailOverlay) detailOverlay.classList.remove('open'); });
+
+const callbackOverlay=document.getElementById('callback-overlay');
+const callbackContext=document.getElementById('callback-context');
+function openCallback(cid){
+  const c=corners[cid];
+  const label = c.num ? ("Corner "+c.num+" - "+c.name) : c.name;
+  callbackContext.textContent="Concernant : "+label;
+  callbackContext.dataset.corner=label;
+  detailOverlay.classList.remove('open');
+  callbackOverlay.classList.add('open');
+}
+document.getElementById('callback-close').addEventListener('click',()=>callbackOverlay.classList.remove('open'));
+callbackOverlay.addEventListener('click',e=>{ if(e.target===callbackOverlay) callbackOverlay.classList.remove('open'); });
+
+document.getElementById('cb-submit').addEventListener('click',()=>{
+  const p=document.getElementById('cb-prenom').value.trim();
+  const n=document.getElementById('cb-nom').value.trim();
+  const em=document.getElementById('cb-email').value.trim();
+  const t=document.getElementById('cb-tel').value.trim();
+  const corner=callbackContext.dataset.corner||"un corner";
+  if(!p||!n||!em){ alert("Merci de renseigner au minimum votre pr\u00e9nom, nom et email."); return; }
+  const subject="Tech Day Nantes - Demande de rappel - "+corner;
+  const body="Bonjour,\n\nJe suis "+p+" "+n+".\nJe suis int\u00e9ress\u00e9(e) par "+corner+" et j'aimerais \u00eatre rappel\u00e9(e).\n\nEmail : "+em+"\nT\u00e9l\u00e9phone : "+(t||"non renseign\u00e9")+"\n\nMerci,\n"+p+" "+n;
+  window.location.href="mailto:charleen.lamaa@pwc.com,theo.le.gendre@pwc.com?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+});
+
+const tabPlan=document.getElementById('tab-plan');
+const tabProg=document.getElementById('tab-programme');
+const tabFb=document.getElementById('tab-feedback');
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const t=btn.dataset.tab;
+    tabPlan.classList.toggle('hidden',t!=='plan');
+    tabProg.classList.toggle('hidden',t!=='programme');
+    tabFb.classList.toggle('hidden',t!=='feedback');
+    window.scrollTo({top:0});
+  });
+});
+</script>
+</body>
+</html>
